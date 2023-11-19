@@ -37,8 +37,8 @@ services:
       - 8000:8000
     volumes:
       - ./:/src
-      - /src/node_modules
-      - /src/vendor
+      - /src/backend/node_modules
+      - /src/backend/vendor
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
 
   mysql:
