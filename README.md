@@ -14,3 +14,5 @@ npm install
 
 ->これでlocalhost:3000にアクセスするとReactの画面になる。
 
+間違ってるよー！
+
