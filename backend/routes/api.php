@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListController;
+use App\Http\Controllers\ConversationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 */
+// conversationのCRUD
+Route::post('conversation', [ConversationController::class, 'create']);
+Route::get('conversation', [ConversationController::class, 'fetch']);
+Route::put('conversation', [ConversationController::class, 'update']);
+Route::delete('conversation', [ConversationController::class, 'delete']);
