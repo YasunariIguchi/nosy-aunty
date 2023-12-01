@@ -54,3 +54,20 @@ docker compose stop
 ```shell
 docker compose up -d
 ```
+
+## バックエンド(Laravel)のマイグレーション
+
+まず、backendフォルダの中にある.env.exampleをコピーして.envにリネームする
+
+その後、backendコンテナの中に入る
+
+```shell
+docker compose exec backend bash
+```
+
+コンテナ内でマイグレーションをする
+
+```shell
+cd backend
+php artisan migrate
+```
