@@ -15,8 +15,8 @@ class ConversationController extends Controller
      */
     public function create(Request $request) {
         $conversation = new Conversation();
-        $conversation->question = $request->question;
-        $conversation->answer = "ここにChatGPTからの返答を入れる";
+        $conversation->line = $request->line;
+        $conversation->advice = "ここにChatGPTからのアドバイスを入れる";
         $conversation->save();
 
         return response()->json($conversation);
