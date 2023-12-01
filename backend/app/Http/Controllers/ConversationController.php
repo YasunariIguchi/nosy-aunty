@@ -14,7 +14,7 @@ class ConversationController extends Controller
      * @return void
      */
     public function create(Request $request) {
-        $conversation = Todo::create($request->all());
+        $conversation = Conversation::create($request->all());
 
         return response()->json($conversation);
     }
@@ -25,7 +25,7 @@ class ConversationController extends Controller
      * @return void
      */
     public function fetch(Request $request) {
-        $conversation = Todo::find($request->id);
+        $conversation = Conversation::find($request->id);
         return response()->json($conversation);
     }
     /**
@@ -35,7 +35,7 @@ class ConversationController extends Controller
      * @return void
      */
     public function update(Request $request) {
-        $conversation = Todo::find($request->id);
+        $conversation = Conversation::find($request->id);
         $conversation->update([
             'id' => $request->id,
             'question' => $request->question,
@@ -50,7 +50,7 @@ class ConversationController extends Controller
      * @return void
      */
     public function delete(Request $request) {
-        $conversation = Todo::find($request->id);
+        $conversation = Conversation::find($request->id);
         $conversation->delete();
         return response()->json();
     }
