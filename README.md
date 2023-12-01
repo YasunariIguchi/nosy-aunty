@@ -71,3 +71,12 @@ docker compose exec backend bash
 cd backend
 php artisan migrate
 ```
+
+## デバッグ機能(vscode)
+vscodeのサイドバーのデバッグのボタンを押す
+↓
+RUN AND DEBUGのところで”Listen for Xdebug”を選択して実行ボタンを押す。
+↓
+デバッグしたい行の行数字の左をクリックして赤丸(ブレークポイント)をつける
+↓
+そこで止まって変数の値など見れます。

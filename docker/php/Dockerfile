@@ -39,3 +39,6 @@ RUN ln -s /usr/local/bin/node /usr/local/bin/nodejs \
 WORKDIR /src
 ADD . /src/storage
 RUN chown -R www-data:www-data /src/storage
+
+RUN pecl install xdebug \
+  && docker-php-ext-enable xdebug
