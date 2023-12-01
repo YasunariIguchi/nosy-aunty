@@ -14,7 +14,10 @@ class ConversationController extends Controller
      * @return void
      */
     public function create(Request $request) {
-        $conversation = Conversation::create($request->all());
+        $conversation = new Conversation();
+        $conversation->question = $request->question;
+        $conversation->answer = "ここにChatGPTからの返答を入れる";
+        $conversation->save();
 
         return response()->json($conversation);
     }
