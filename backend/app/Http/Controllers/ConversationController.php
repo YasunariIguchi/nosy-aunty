@@ -15,15 +15,20 @@ class ConversationController extends Controller
      * @return void
      */
     public function store(Request $request) {
-        $result = OpenAI::completions()->create([
-            'model' => 'text-davinci-003',
-            'prompt' => $request->line,
+        $result = OpenAI::chat()->create([
+            'model' => 'gpt-3.5-turbo',
+            'messages' => [
+                [
+                    'role' => 'user',
+                    'content' => $request->line
+                ]
+            ],
             'temperature' => 0.8,
             'max_tokens' => 150,
         ]);
         $conversation = new Conversation();
         $conversation->line = $request->line;
-        $conversation->advice = $result['choices'][0]['text'];
+        $conversation->advice = $result->choices[0]->message->content;
         $user = $request->user();
         if($user){  //ログインしている場合は会話履歴を残す
             $conversation->user_id = $user->id;
