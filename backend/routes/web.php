@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 // conversationのCRUD
-Route::middleware('auth')->group(function () {
+Route::middleware([])->group(function () {
     Route::get('conversation', [ConversationController::class, 'fetch']);
     Route::post('conversation', [ConversationController::class, 'store']);
     Route::put('conversation', [ConversationController::class, 'update']);

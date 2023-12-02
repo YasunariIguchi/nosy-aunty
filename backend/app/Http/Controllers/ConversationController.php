@@ -14,12 +14,20 @@ class ConversationController extends Controller
      * @return void
      */
     public function store(Request $request) {
+        /*
+        ここにChatGPTとの通信を実装する
+        */
         $conversation = new Conversation();
         $conversation->line = $request->line;
         $conversation->advice = "ここにChatGPTからのアドバイスを入れる";
-        $conversation->user_id = $request->user()->id;
-        $conversation->save();
-
+        $user = $request->user();
+        if($user){  //ログインしている場合は会話履歴を残す
+            $conversation->user_id = $user->id;
+            $conversation->save();
+        }
+        else {
+            $conversation->user_id = NULL;
+        }
         return response()->json($conversation);
     }
     /**
