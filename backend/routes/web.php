@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ConversationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
+});
+
+// conversationのCRUD
+Route::middleware('auth')->group(function () {
+    Route::get('conversation', [ConversationController::class, 'fetch']);
+    Route::post('conversation', [ConversationController::class, 'store']);
+    Route::put('conversation', [ConversationController::class, 'update']);
+    Route::delete('conversation', [ConversationController::class, 'delete']);
 });
 
 require __DIR__.'/auth.php';

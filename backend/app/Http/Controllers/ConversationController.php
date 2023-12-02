@@ -13,7 +13,7 @@ class ConversationController extends Controller
      * @param Request $request
      * @return void
      */
-    public function create(Request $request) {
+    public function store(Request $request) {
         $conversation = new Conversation();
         $conversation->line = $request->line;
         $conversation->advice = "ここにChatGPTからのアドバイスを入れる";
