@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use Illuminate\Http\Request;
+use OpenAI\Laravel\Facades\OpenAI;
 
 class ConversationController extends Controller
-{
+{   
     /**
      * Conversation作成.
      *
@@ -14,9 +15,26 @@ class ConversationController extends Controller
      * @return void
      */
     public function create(Request $request) {
+       // OpenAIに送信するデータの準備
+       $data =OpenAI::chat()->create([
+           "model" => "gpt-3.5-turbo",
+           "messages" => [
+               [
+                   "role" => "user",
+                   "content" => $request->line,
+               ]
+           ]
+       ]);
+
         $conversation = new Conversation();
         $conversation->line = $request->line;
-        $conversation->advice = "ここにChatGPTからのアドバイスを入れる";
+        $conversation->advice = $data->choices[0]->message->content;
+        // ログインしているかどうかを確認
+   /* if (Auth::check()) {
+        // ログインしていれば、質問と回答をデータベースに保存
+        $conversation->question = $request->question;
+        $conversation->answer = $request->answer;
+    }*/
         $conversation->save();
 
         return response()->json($conversation);
