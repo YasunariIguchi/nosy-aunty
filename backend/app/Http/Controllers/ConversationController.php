@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation;
 use Illuminate\Http\Request;
+use OpenAI\Laravel\Facades\OpenAI;
 
 class ConversationController extends Controller
 {
@@ -14,12 +15,15 @@ class ConversationController extends Controller
      * @return void
      */
     public function store(Request $request) {
-        /*
-        ここにChatGPTとの通信を実装する
-        */
+        $result = OpenAI::completions()->create([
+            'model' => 'text-davinci-003',
+            'prompt' => $request->line,
+            'temperature' => 0.8,
+            'max_tokens' => 150,
+        ]);
         $conversation = new Conversation();
         $conversation->line = $request->line;
-        $conversation->advice = "ここにChatGPTからのアドバイスを入れる";
+        $conversation->advice = $result['choices'][0]['text'];
         $user = $request->user();
         if($user){  //ログインしている場合は会話履歴を残す
             $conversation->user_id = $user->id;
