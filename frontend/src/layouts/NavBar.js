@@ -7,30 +7,36 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 export default function NavBar() {
-  const props = { marginBottom: 20 }
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={props}>
-        <Toolbar>
+    <>
+      <style jsx="true">{`
+        .navbar-wrapper {
+          margin-bottom: 88px;
+        }
+      `}</style>
+      <Box sx={{ flexGrow: 1 }} className="navbar-wrapper">
+        <AppBar position="fixed">
+          <Toolbar>
 
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            おせっかいおばさん
-          </Typography>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              おせっかいおばさん
+            </Typography>
 
-          <Button color="inherit">Login</Button>
+            <Button color="inherit">Login</Button>
 
-        </Toolbar>
-      </AppBar>
-    </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </>
   );
 }
