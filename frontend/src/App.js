@@ -1,37 +1,11 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import NavBar from "./layouts/NavBar";
+import Top from "./pages/Top";
 
-const App = () => {
-
-  const [value, setValue] = useState([]);
-
-  // 先ほど作成したLaravelのAPIのURL
-  const url = "http://localhost/api/list";
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(url);
-        setValue(res.data.post);
-        return;
-      } catch (e) {
-        return e;
-      }
-    })();
-  }, []);
-
+export default function App() {
   return (
-    <div className="App">
-      {value.map((article) => {
-        return (
-          <div key={article.id}>
-            <h1>{article.title}</h1>
-            <p>{article.content}</p>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <NavBar />
+      <Top />
+    </>
   );
 }
-
-export default App;

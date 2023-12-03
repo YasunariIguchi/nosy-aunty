@@ -9,8 +9,8 @@ services:
       source: ./frontend
       target: /usr/src/frontend
     #"react-app"の部分がプロジェクト名になる
-    #command: sh -c "cd nosy-aunty && yarn start"
-    command: sh -c "yarn start"
+    # command: sh -c "cd nosy-aunty && yarn start"
+    # command: sh -c "yarn start"
     ports:
       - 3000:3000
     stdin_open: true #標準入力をコンテナと紐付ける
