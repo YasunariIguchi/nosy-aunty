@@ -23,8 +23,6 @@ class ConversationController extends Controller
                     'content' => $request->line
                 ]
             ],
-            'temperature' => 0.8,
-            'max_tokens' => 150,
         ]);
         $conversation = new Conversation();
         $conversation->line = $request->line;
