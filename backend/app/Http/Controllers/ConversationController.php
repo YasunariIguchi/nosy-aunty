@@ -19,6 +19,10 @@ class ConversationController extends Controller
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 [
+                    "role" => "system",
+                    "content" => "関西弁のおばちゃんになってアドバイスして下さい。最後語尾に「しらんけど」をつけてください",
+                ],
+                [
                     'role' => 'user',
                     'content' => $request->line
                 ]
