@@ -4,8 +4,26 @@ import PasteButton from '../components/PasteButton';
 import MainTextField from '../components/MainTextFiled';
 import ConsultButton from '../components/ConsultButton';
 import ClearButton from '../components/ClearButton';
+import axios from 'axios';
+import { useTyping, TypeWriterText } from '../components/TypeWriterText';
 
 export default function Top() {
+  const url = "http://localhost/api/list";
+  const { typeStart, ...params } = useTyping();
+  const fetchResult = () => {
+    try {
+      axios.get(url).then((res) => {
+        let result = "";
+        res.data.post.forEach(element => {
+          result += element.content;
+        });
+        typeStart(result);
+      });
+      return;
+    } catch (e) {
+      return e;
+    }
+  }
   return (
     <>
       <style jsx="true">{`
@@ -50,15 +68,13 @@ export default function Top() {
         </div>
 
         <div className="consult-button">
-          <ConsultButton />
+          <ConsultButton onClick={fetchResult}/>
         </div>
 
         <div className="result-wrapper">
           <h2>おせっかいおばさんのありがたいお言葉</h2>
           <div className="result-text">
-            <p>
-              そんな子どもみたいなやり取りしてたら、そら振られるわ！
-            </p>
+            <TypeWriterText {...params} />
           </div>
         </div>
 

@@ -12,7 +12,7 @@ services:
     # command: sh -c "cd nosy-aunty && yarn start"
     # command: sh -c "yarn start"
     ports:
-      - 3000:3000
+      - ${FRONT_PORT:-3000}:3000
     stdin_open: true #標準入力をコンテナと紐付ける
 
   nginx:
@@ -36,8 +36,8 @@ services:
       - 8000:8000
     volumes:
       - ./:/src
-      - /src/backend/node_modules
-      - /src/backend/vendor
+      - node_modules:/src/backend/node_modules
+      - vendor:/src/backend/vendor
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
 
   mysql:
@@ -57,3 +57,7 @@ services:
     container_name: "redis"
     ports:
       - 16379:6379
+
+volumes:
+  node_modules:
+  vendor:
