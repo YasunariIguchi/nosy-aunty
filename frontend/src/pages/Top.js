@@ -6,20 +6,30 @@ import ConsultButton from '../components/ConsultButton';
 import ClearButton from '../components/ClearButton';
 import axios from 'axios';
 import { useTyping, TypeWriterText } from '../components/TypeWriterText';
+import { useEffect, useRef } from 'react';
 
 export default function Top() {
-  const url = "http://localhost/api/list";
   const { typeStart, ...params } = useTyping();
+  const inputText = useRef(null);
+
+  useEffect(() => {
+    axios.get('http://localhost/sanctum/csrf-cookie', { withCredentials: true })
+  }, []);
+
   const fetchResult = () => {
+    const requestBody = {
+      line: inputText.current.children[1].children[0].value,
+    };
+    const requestOptions = {
+      withCredentials: true,
+      withXSRFToken: true,
+    };
     try {
-      axios.get(url).then((res) => {
-        let result = "";
-        res.data.post.forEach(element => {
-          result += element.content;
-        });
-        typeStart(result);
+      axios
+        .post("http://localhost/conversation", requestBody, requestOptions)
+        .then((res) => {
+          typeStart(res.data.advice);
       });
-      return;
     } catch (e) {
       return e;
     }
@@ -64,7 +74,7 @@ export default function Top() {
         </div>
 
         <div className="main-text-field">
-          <MainTextField />
+          <MainTextField ref={inputText}/>
         </div>
 
         <div className="consult-button">

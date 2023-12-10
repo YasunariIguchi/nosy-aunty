@@ -2,14 +2,14 @@ import { useState, useRef, useEffect } from 'react';
 
 const useTyping = () => {
   const [text, setText] = useState('');
-  const [key, setKey] = useState('');
+  const [key, setKey] = useState(0);
 
   const typeStart = (text = '') => {
     setKey(current => current + 1);
     setText(text);
   };
-  const typeEnd = () => {
-    // do nothing
+  const typeEnd = (timer) => {
+    clearTimeout(timer);
   };
 
   return {
@@ -23,23 +23,21 @@ const useTyping = () => {
 
 const TypeWriterText = ({ text, typeEnd }) => {
   const [message, setMessage] = useState('');
+  const timer = useRef(null);
   const msgEl = useRef(null);
   useEffect(() => {
     const charItr = text[Symbol.iterator]();
-    let timer;
-
-    (function showChar() {
+    const showChar = () => {
       const nextChar = charItr.next();
       if(nextChar.done) {
-        typeEnd();
+        typeEnd(timer.current);
         return;
       }
       setMessage(current => current + nextChar.value);
-      timer = setTimeout(showChar, 50);
-    }());
+    }
+    timer.current = setInterval(showChar, 40);
 
-    return () => clearTimeout(timer);
-
+    return () => clearTimeout(timer.current);
   }, []);
 
   useEffect(() => {
@@ -50,7 +48,7 @@ const TypeWriterText = ({ text, typeEnd }) => {
   })
 
   return (
-    <p ref={msgEl}>
+    <p ref={msgEl} style={{ whiteSpace: 'pre-line' }}>
       {message}
     </p>
   );
