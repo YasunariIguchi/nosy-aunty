@@ -43,7 +43,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+    
     public function conversations(): HasMany
     {
         return $this->hasMany(Conversation::class);
