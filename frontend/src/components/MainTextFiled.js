@@ -3,9 +3,9 @@ import { forwardRef } from 'react';
 const MainTextField = forwardRef((props, ref) => (
     <TextField
       id="outlined-multiline-static"
-      label="ここに貼り付けるんやで"
       multiline
       fullWidth
+      placeholder={'ここにLINEのやり取りを貼り付けるんやで'}
       rows={10}
       inputRef={ref}
     />
