@@ -7,7 +7,7 @@ const MainTextField = forwardRef((props, ref) => (
       multiline
       fullWidth
       rows={10}
-      ref={ref}
+      inputRef={ref}
     />
 ));
 

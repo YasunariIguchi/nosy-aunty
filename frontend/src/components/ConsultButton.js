@@ -4,7 +4,7 @@ export default function ConsultButton({ inputTextRef, typeStart }) {
 
   const fetchResult = () => {
     const requestBody = {
-      line: inputTextRef.current.children[1].children[0].value,
+      line: inputTextRef.current.value,
     };
     const requestOptions = {
       withCredentials: true,
