@@ -52,7 +52,7 @@ export default function Top() {
 
         <div className="button-area">
           <ClearButton inputTextRef={inputText}/>
-          <PasteButton />
+          <PasteButton inputTextRef={inputText}/>
         </div>
 
         <div className="main-text-field">
