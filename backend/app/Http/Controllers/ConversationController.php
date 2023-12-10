@@ -88,7 +88,7 @@ class ConversationController extends Controller
         // ユーザーが認証されているかどうかを確認する
         if (Auth::check()) {
             $user = Auth::user();
-            $conversations = $user->conversations(); // Userモデルとのリレーションを通じてログインユーザーの投稿一覧を取得
+            $conversations = $user->conversations; // Userモデルとのリレーションを通じてログインユーザーの投稿一覧を取得
         } else {
             $conversations = "ログイン無し";
         }
