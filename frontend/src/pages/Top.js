@@ -16,24 +16,6 @@ export default function Top() {
     axios.get('http://localhost/sanctum/csrf-cookie', { withCredentials: true })
   }, []);
 
-  const fetchResult = () => {
-    const requestBody = {
-      line: inputText.current.children[1].children[0].value,
-    };
-    const requestOptions = {
-      withCredentials: true,
-      withXSRFToken: true,
-    };
-    try {
-      axios
-        .post("http://localhost/conversation", requestBody, requestOptions)
-        .then((res) => {
-          typeStart(res.data.advice);
-      });
-    } catch (e) {
-      return e;
-    }
-  }
   return (
     <>
       <style jsx="true">{`
@@ -78,7 +60,7 @@ export default function Top() {
         </div>
 
         <div className="consult-button">
-          <ConsultButton onClick={fetchResult}/>
+          <ConsultButton inputTextRef={inputText} typeStart={typeStart}/>
         </div>
 
         <div className="result-wrapper">

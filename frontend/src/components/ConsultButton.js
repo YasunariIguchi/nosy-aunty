@@ -1,8 +1,30 @@
 import { Button } from "@mui/material";
-export default function ConsultButton({ onClick }) {
-  const handleClick = () => onClick();
+import axios from "axios";
+export default function ConsultButton({ inputTextRef, typeStart }) {
+
+  const fetchResult = () => {
+    const requestBody = {
+      line: inputTextRef.current.children[1].children[0].value,
+    };
+    const requestOptions = {
+      withCredentials: true,
+      withXSRFToken: true,
+    };
+    console.log(requestBody);
+    try {
+      axios
+        .post("http://localhost/conversation", requestBody, requestOptions)
+        .then((res) => {
+          console.log(res);
+          typeStart(res.data.advice);
+      });
+    } catch (e) {
+      return e;
+    }
+  }
+
   return (
-    <Button fullWidth variant="contained" onClick={handleClick} >
+    <Button fullWidth variant="contained" onClick={fetchResult} >
       おばさんに見せてアドバイスをもらう
     </Button>
   );
