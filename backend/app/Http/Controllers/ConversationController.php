@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
+
 
 class ConversationController extends Controller
 {
@@ -77,4 +79,20 @@ class ConversationController extends Controller
         $conversation->delete();
         return response()->json();
     }
-}
+    /**
+     * ログインしたユーザーの投稿を一覧表示
+     *
+     */
+    public function index()
+    {
+        // ユーザーが認証されているかどうかを確認する
+        if (Auth::check()) {
+            $user = Auth::user();
+            $conversations = $user->conversations; // Userモデルとのリレーションを通じてログインユーザーの投稿一覧を取得
+        } else {
+            $conversations = "ログイン無し";
+        }
+        return response()->json($conversations);
+    }
+    
+}   

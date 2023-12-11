@@ -20,10 +20,11 @@ Route::get('/', function () {
 
 // conversationのCRUD
 Route::middleware([])->group(function () {
-    Route::get('conversation', [ConversationController::class, 'fetch']);
+    Route::get('conversations', [ConversationController::class, 'index']);
+    Route::get('conversation/{id}', [ConversationController::class, 'fetch']);
     Route::post('conversation', [ConversationController::class, 'store']);
-    Route::put('conversation', [ConversationController::class, 'update']);
-    Route::delete('conversation', [ConversationController::class, 'delete']);
+    Route::put('conversation/{id}', [ConversationController::class, 'update']);
+    Route::delete('conversation/{id}', [ConversationController::class, 'delete']);
 });
 
 require __DIR__.'/auth.php';
