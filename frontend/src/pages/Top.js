@@ -6,24 +6,16 @@ import ConsultButton from '../components/ConsultButton';
 import ClearButton from '../components/ClearButton';
 import axios from 'axios';
 import { useTyping, TypeWriterText } from '../components/TypeWriterText';
+import { useEffect, useRef } from 'react';
 
 export default function Top() {
-  const url = "http://localhost/api/list";
   const { typeStart, ...params } = useTyping();
-  const fetchResult = () => {
-    try {
-      axios.get(url).then((res) => {
-        let result = "";
-        res.data.post.forEach(element => {
-          result += element.content;
-        });
-        typeStart(result);
-      });
-      return;
-    } catch (e) {
-      return e;
-    }
-  }
+  const inputText = useRef(null);
+
+  useEffect(() => {
+    axios.get('http://localhost/sanctum/csrf-cookie', { withCredentials: true })
+  }, []);
+
   return (
     <>
       <style jsx="true">{`
@@ -59,16 +51,16 @@ export default function Top() {
         </div>
 
         <div className="button-area">
-          <ClearButton />
-          <PasteButton />
+          <ClearButton inputTextRef={inputText}/>
+          <PasteButton inputTextRef={inputText}/>
         </div>
 
         <div className="main-text-field">
-          <MainTextField />
+          <MainTextField ref={inputText}/>
         </div>
 
         <div className="consult-button">
-          <ConsultButton onClick={fetchResult}/>
+          <ConsultButton inputTextRef={inputText} typeStart={typeStart}/>
         </div>
 
         <div className="result-wrapper">
