@@ -13,7 +13,7 @@ export default function Top() {
   const inputText = useRef(null);
 
   useEffect(() => {
-    axios.get('http://localhost/sanctum/csrf-cookie', { withCredentials: true })
+    axios.get(process.env.REACT_APP_API + '/sanctum/csrf-cookie', { withCredentials: true })
   }, []);
 
   return (
