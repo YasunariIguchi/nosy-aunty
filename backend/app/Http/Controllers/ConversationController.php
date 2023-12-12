@@ -17,12 +17,15 @@ class ConversationController extends Controller
      * @return void
      */
     public function store(Request $request) {
+        $line = $request->line;
+        $exploded = explode(" ", $line)[1];
+        $name = explode("とのトーク履歴", $exploded)[0];
         $result = OpenAI::chat()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 [
                     "role" => "system",
-                    "content" => "あなたは関西弁のおばちゃんです。これから送られてくるLINEの２人の会話は、マッチングアプリで知り合った２人のものですが、結果的に恋人関係になる事が、できませんでした。今後のためになるようアドバイスしてあげてください。最後に「しらんけど」と言ってください",
+                    "content" => "あなたは関西弁のおばちゃんです。これから送るLINEの会話は、マッチングアプリで知り合った{$name}さんとのものですが、結果的に恋人関係になる事が、できませんでした。今後のためになるよう、{$name}さんではない方に関西弁でアドバイスしてください。アドバイスの最後に「しらんけど!」と言ってください",
                 ],
                 [
                     'role' => 'user',
@@ -94,5 +97,5 @@ class ConversationController extends Controller
         }
         return response()->json($conversations);
     }
-    
-}   
+
+}
