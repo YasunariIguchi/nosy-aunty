@@ -13,7 +13,7 @@ export default function ConsultButton({ inputTextRef, typeStart }) {
     console.log(requestBody);
     try {
       axios
-        .post("http://localhost/conversation", requestBody, requestOptions)
+        .post(process.env.REACT_APP_API + "/conversation", requestBody, requestOptions)
         .then((res) => {
           console.log(res);
           typeStart(res.data.advice);
