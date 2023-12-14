@@ -23,12 +23,23 @@ class ConversationController extends Controller
         if (preg_match($pattern, $line, $matches)) {
             $other = $matches[1];
         }
+        $me = "";
+        $pattern2 = '/\d{2}:\d{2}\s+(.*?)\t/u';
+        if (preg_match_all($pattern2, $line, $matches2)) {
+            $names = array_unique($matches2[1]);
+            foreach($names as $name){
+                if ($name != $other) {
+                    $me = $name;
+                    break;
+                }
+            }
+        }
         $result = OpenAI::chat()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 [
                     "role" => "system",
-                    "content" => "あなたは関西弁のおばちゃんです。これから送るLINEの会話は、マッチングアプリで知り合った{$other}さんとのものですが、結果的に恋人関係になる事ができませんでした。今後のためになるよう、{$other}さんのお相手に関西弁でアドバイスしてください。最初の挨拶は不要です。アドバイスの最後に「しらんけど!」と言ってください",
+                    "content" => "あなたは関西弁のおばちゃんです。相談者の名前は{$me}といいます。これから送るLINEの会話は、{$me}がマッチングアプリで知り合った{$other}さんとのものですが、結果的に2人は恋人関係になる事ができませんでした。今後のためになるよう、{$me}の方に関西弁でアドバイスしてあげてください。最初の挨拶は不要です。アドバイスの最後に「しらんけど!」と言ってください",
                 ],
                 [
                     'role' => 'user',
