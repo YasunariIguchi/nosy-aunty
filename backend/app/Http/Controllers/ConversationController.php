@@ -19,16 +19,16 @@ class ConversationController extends Controller
     public function store(Request $request) {
         $line = $request->line;
         $pattern = '/\[LINE\]\s+(.*?)とのトーク履歴/';
-        $other = "";
+        $other = "";    //会話相手の名前
         if (preg_match($pattern, $line, $matches)) {
             $other = $matches[1];
         }
-        $me = "";
+        $me = "";   //自分の名前
         $pattern2 = '/\d{2}:\d{2}\s+(.*?)\t/u';
         if (preg_match_all($pattern2, $line, $matches2)) {
             $names = array_unique($matches2[1]);
             foreach($names as $name){
-                if ($name != $other) {
+                if ($name != $other) {  //会話相手の名前じゃない方を自分の名前とする
                     $me = $name;
                     break;
                 }
