@@ -19,16 +19,16 @@ class ConversationController extends Controller
     public function store(Request $request) {
         $line = $request->line;
         $pattern = '/\[LINE\]\s+(.*?)とのトーク履歴/';
-        $result = "";
+        $other = "";
         if (preg_match($pattern, $line, $matches)) {
-            $result = $matches[1];
+            $other = $matches[1];
         }
         $result = OpenAI::chat()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 [
                     "role" => "system",
-                    "content" => "あなたは関西弁のおばちゃんです。これから送るLINEの会話は、マッチングアプリで知り合った{$name}さんとのものですが、結果的に恋人関係になる事ができませんでした。今後のためになるよう、{$name}さんのお相手に関西弁でアドバイスしてください。最初の挨拶は不要です。アドバイスの最後に「しらんけど!」と言ってください",
+                    "content" => "あなたは関西弁のおばちゃんです。これから送るLINEの会話は、マッチングアプリで知り合った{$other}さんとのものですが、結果的に恋人関係になる事ができませんでした。今後のためになるよう、{$other}さんのお相手に関西弁でアドバイスしてください。最初の挨拶は不要です。アドバイスの最後に「しらんけど!」と言ってください",
                 ],
                 [
                     'role' => 'user',
