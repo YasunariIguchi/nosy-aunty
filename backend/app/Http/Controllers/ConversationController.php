@@ -18,8 +18,11 @@ class ConversationController extends Controller
      */
     public function store(Request $request) {
         $line = $request->line;
-        $exploded = explode(" ", $line)[1];
-        $name = explode("とのトーク履歴", $exploded)[0];
+        $pattern = '/\[LINE\]\s+(.*?)とのトーク履歴/';
+        $result = "";
+        if (preg_match($pattern, $line, $matches)) {
+            $result = $matches[1];
+        }
         $result = OpenAI::chat()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => [
