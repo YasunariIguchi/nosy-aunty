@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 const useTyping = () => {
-  const [text, setText] = useState('');
+  const [text, setText] = useState(' ');
   const [key, setKey] = useState(0);
 
   const typeStart = (text = '') => {
@@ -22,7 +22,7 @@ const useTyping = () => {
 };
 
 const TypeWriterText = ({ text, typeEnd }) => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(' ');
   const timer = useRef(null);
   const msgEl = useRef(null);
   useEffect(() => {

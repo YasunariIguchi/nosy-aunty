@@ -13,7 +13,7 @@ export default function Footer() {
       `}</style>
       <Container maxWidth="md" className="footer">
         <div className="copyright">
-          <p>© 2023 おせっかいおばさん@</p>
+          <p>© 2023 おせっかいおばちゃん@</p>
         </div>
       </Container>
     </>
