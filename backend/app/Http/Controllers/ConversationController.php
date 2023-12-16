@@ -17,12 +17,29 @@ class ConversationController extends Controller
      * @return void
      */
     public function store(Request $request) {
+        $line = $request->line;
+        $pattern = '/\[LINE\]\s+(.*?)とのトーク履歴/';
+        $other = "";    //会話相手の名前
+        if (preg_match($pattern, $line, $matches)) {
+            $other = $matches[1];
+        }
+        $me = "";   //自分の名前
+        $pattern2 = '/\d{2}:\d{2}\s+(.*?)\t/u';
+        if (preg_match_all($pattern2, $line, $matches2)) {
+            $names = array_unique($matches2[1]);
+            foreach($names as $name){
+                if ($name != $other) {  //会話相手の名前じゃない方を自分の名前とする
+                    $me = $name;
+                    break;
+                }
+            }
+        }
         $result = OpenAI::chat()->create([
             'model' => 'gpt-3.5-turbo',
             'messages' => [
                 [
                     "role" => "system",
-                    "content" => "関西弁のおばちゃんになってアドバイスして下さい。最後語尾に「しらんけど」をつけてください",
+                    "content" => "あなたは関西弁のおばちゃんです。相談者の名前は{$me}といいます。これから送るLINEの会話は、{$me}がマッチングアプリで知り合った{$other}さんとのものですが、結果的に2人は恋人関係になる事ができませんでした。今後のためになるよう、{$me}の方に関西弁でアドバイスしてあげてください。最初の挨拶は不要です。アドバイスの最後に「しらんけど!」と言ってください",
                 ],
                 [
                     'role' => 'user',
@@ -94,5 +111,5 @@ class ConversationController extends Controller
         }
         return response()->json($conversations);
     }
-    
-}   
+
+}
