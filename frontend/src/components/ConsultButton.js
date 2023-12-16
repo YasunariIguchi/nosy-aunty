@@ -28,7 +28,7 @@ export default function ConsultButton({ inputTextRef, typeStart, handleSpinner }
 
   return (
     <Button fullWidth variant="contained" onClick={fetchResult} >
-      おばさんに見せてアドバイスをもらう
+      おばちゃんに見せてアドバイスをもらう
     </Button>
   );
 }

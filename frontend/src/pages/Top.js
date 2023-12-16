@@ -53,8 +53,8 @@ export default function Top() {
       <CssBaseline />
       <Container maxWidth="md">
         <div className="pre-text">
-          <h1>おせっかいおばさん</h1>
-          <p>あんたまた出会い系で女に振られたんやて！？ちょっとスマホでどんなやり取りしてんの！？見せてみーや！</p>
+          <h1>おせっかいおばちゃん</h1>
+          <p>あんたまたマッチングアプリで振られたんやて！？ちょっとスマホでどんなやり取りしてんの！？見せてみーや！</p>
         </div>
 
         <div className="button-area">
@@ -72,7 +72,7 @@ export default function Top() {
 
 
         <div className="result-wrapper">
-          <h2>おせっかいおばさんのありがたいお言葉</h2>
+          <h2>おせっかいおばちゃんのありがたいお言葉</h2>
           <div className="result-text">
             <LoadingSpinner visibility={spinnerVisible} />
             <div className="result-wrap">
