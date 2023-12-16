@@ -6,11 +6,17 @@ import ConsultButton from '../components/ConsultButton';
 import ClearButton from '../components/ClearButton';
 import axios from 'axios';
 import { useTyping, TypeWriterText } from '../components/TypeWriterText';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Top() {
+  const [ spinnerVisible , setSpinnerVisible ] = useState(false);
   const { typeStart, ...params } = useTyping();
   const inputText = useRef(null);
+
+  const handleSpinner = (visibility) => {
+    setSpinnerVisible(visibility);
+  };
 
   useEffect(() => {
     axios.get(process.env.REACT_APP_API + '/sanctum/csrf-cookie', { withCredentials: true })
@@ -41,6 +47,7 @@ export default function Top() {
           border: 1px solid #bdbdbd;
           border-radius: 20px;
           padding: 2rem;
+          position: relative;
         }
       `}</style>
       <CssBaseline />
@@ -60,13 +67,17 @@ export default function Top() {
         </div>
 
         <div className="consult-button">
-          <ConsultButton inputTextRef={inputText} typeStart={typeStart}/>
+          <ConsultButton inputTextRef={inputText} typeStart={typeStart} handleSpinner={handleSpinner}/>
         </div>
+
 
         <div className="result-wrapper">
           <h2>おせっかいおばさんのありがたいお言葉</h2>
           <div className="result-text">
-            <TypeWriterText {...params} />
+            <LoadingSpinner visibility={spinnerVisible} />
+            <div className="result-wrap">
+              <TypeWriterText {...params} />
+            </div>
           </div>
         </div>
 
