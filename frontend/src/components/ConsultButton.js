@@ -1,9 +1,13 @@
 import { Button } from "@mui/material";
 import axios from "axios";
+import { useState } from "react";
 export default function ConsultButton({ inputTextRef, typeStart, handleSpinner }) {
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const fetchResult = () => {
     handleSpinner(true);
+    setIsDisabled(true);
+    typeStart(" ");
     const requestBody = {
       line: inputTextRef.current.value,
     };
@@ -18,16 +22,19 @@ export default function ConsultButton({ inputTextRef, typeStart, handleSpinner }
         .then((res) => {
           console.log(res);
           handleSpinner(false);
+          setIsDisabled(false);
           typeStart(res.data.advice);
       });
     } catch (e) {
       handleSpinner(false);
+      setIsDisabled(false);
+      typeStart("Error occurred.");
       return e;
     }
   }
 
   return (
-    <Button fullWidth variant="contained" onClick={fetchResult} >
+    <Button fullWidth variant="contained" onClick={fetchResult} disabled={isDisabled} >
       おばちゃんに見せてアドバイスをもらう
     </Button>
   );
