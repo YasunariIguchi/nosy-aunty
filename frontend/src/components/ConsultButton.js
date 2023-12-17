@@ -4,6 +4,7 @@ export default function ConsultButton({ inputTextRef, typeStart, handleSpinner }
 
   const fetchResult = () => {
     handleSpinner(true);
+    typeStart(" ");
     const requestBody = {
       line: inputTextRef.current.value,
     };
@@ -22,6 +23,7 @@ export default function ConsultButton({ inputTextRef, typeStart, handleSpinner }
       });
     } catch (e) {
       handleSpinner(false);
+      typeStart("Error occurred.");
       return e;
     }
   }
