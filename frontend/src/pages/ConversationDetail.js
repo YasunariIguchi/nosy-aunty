@@ -1,45 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Typography, List, ListItem, ListItemText, CircularProgress } from '@mui/material';
+import { Typography, CircularProgress } from '@mui/material';
 import './ConversationDetail.css';
+import { useTheme } from '@mui/material/styles';
 
 const ConversationDetail = () => {
-const { id } = useParams(); // URLパラメータからIDを取得
-const [conversation, setConversation] = useState(null);
-const [error, setError] = useState(null); // エラー状態を管理
-const [loading, setLoading] = useState(true); // データ読み込み中を管理
+  const theme = useTheme();
+  const { id } = useParams();
+  const [conversation, setConversation] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const convertToJST = (utcDate) => {
-  const convertedDate = new Date(utcDate);
-  return convertedDate.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
-};
+  const convertToJST = (utcDate) => {
+    const convertedDate = new Date(utcDate);
+    return convertedDate.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+  };
 
   useEffect(() => {
-    // APIから会話履歴の詳細を取得する関数
     const fetchConversationDetail = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API}/conversation/${id}`, {
           withCredentials: true,
           withXSRFToken: true,
-          // 他の必要なオプションがあればここに追加
         });
         const updatedConversation = {
           ...response.data,
           created_at: convertToJST(response.data.created_at),
-          // 他の日付も必要に応じて変換できます
         };
         setConversation(updatedConversation);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching conversation detail:', error);
-        setError('会話履歴を取得できませんでした。'); // エラーが起きた場合のメッセージ
+        setError('会話履歴を取得できませんでした。');
         setLoading(false);
       }
     };
 
-    fetchConversationDetail(); // 関数を実行
-  }, [id]); // idが変更された時のみ再実行
+    fetchConversationDetail();
+  }, [id]);
 
   return (
     <div className="conversation-detail-container">
@@ -49,20 +48,29 @@ const convertToJST = (utcDate) => {
         <Typography color="error">{error}</Typography>
       ) : conversation ? (
         <div className="conversation-detail-content">
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom style={{ alignSelf: 'flex-start' }}>
             会話履歴詳細
           </Typography>
-          <List>
-            <ListItem>
-              <ListItemText primary={`作成日時: ${conversation.created_at}`} />
-            </ListItem>
-            <ListItem>
-                  <ListItemText primary={`ライン:\n ${conversation.line}`} style={{ whiteSpace: 'pre-line' }} />
-            </ListItem>
-            <ListItem>
-                  <ListItemText primary={`アドバイス:\n ${conversation.advice}`} style={{ whiteSpace: 'pre-line' }} />
-            </ListItem>
-          </List>
+          <div className="split-panel">
+                <div className="scrollable-panel" style={{ backgroundColor: theme.palette.primary.main }}>
+                  <div className="centered-content">
+                    <Typography variant="h6" style={{ color: theme.palette.common.white }}>投稿内容</Typography>
+              </div>
+            </div>
+                <div className="scrollable-panel" style={{ backgroundColor: theme.palette.primary.main }}>
+                  <div className="centered-content">
+                    <Typography variant="h6" style={{ color: theme.palette.common.white }}>アドバイス</Typography>
+              </div>
+            </div>
+          </div>
+          <div className="split-panel">
+            <div className="scrollable-panel">
+              <Typography style={{ whiteSpace: 'pre-line' }}>{conversation.line}</Typography>
+            </div>
+            <div className="scrollable-panel">
+              <Typography style={{ whiteSpace: 'pre-line' }}>{conversation.advice}</Typography>
+            </div>
+          </div>
         </div>
       ) : (
         <Typography>Loading...</Typography>
