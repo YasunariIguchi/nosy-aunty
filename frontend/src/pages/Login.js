@@ -1,7 +1,7 @@
-// 必要なパッケージをインポート
 import axios from "axios";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button, TextField, Typography, Box, Container } from '@mui/material';
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ function Login({ setIsLoggedIn }) {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // フォームのデフォルトの動作を無効化する
+    e.preventDefault();
 
     try {
       const response = await axios.post(
@@ -30,44 +30,55 @@ function Login({ setIsLoggedIn }) {
         {
           withCredentials: true,
           withXSRFToken: true,
-          // 他の必要なオプションがあればここに追加
         }
       );
-      console.log(response.status)
-      // ログイン成功時の処理
-      console.log('ログイン成功');
       setIsLoggedIn(true);
-      navigate('/'); // ログイン後のリダイレクト先を指定
+      navigate('/');
     } catch (error) {
       if (error.response) {
-        // サーバーからのレスポンスがある場合
-        setError('ログインに失敗しました。ユーザー名とパスワードを確認してください。');
+        setError('ログインに失敗したわ。ユーザー名とパスワードを確認してみ！');
       } else if (error.request) {
-        // リクエストが送信されたがレスポンスがない場合
-        setError('ネットワークエラーが発生しました。もう一度お試しください。');
+        setError('ネットワークエラーが発生したわ。もういっぺん試してみ！');
       } else {
-        // リクエストすら送信されなかった場合
-        setError('予期せぬエラーが発生しました。もう一度お試しください。');
+        setError('予期せんエラーが発生したわ。もういっぺん試してみ！');
       }
     }
   };
 
   return (
-    <div>
-      <h2>Login Page</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={handleEmailChange} />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} />
-        </div>
-        <button type="submit">Login</button>
-        {error && <p>{error}</p>}
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 8, textAlign: 'center' }}>
+        <Typography variant="h4" component="h2" gutterBottom>
+          ログインページや！
+        </Typography>
+        <form onSubmit={handleLogin}>
+          <TextField
+            label="メールアドレス"
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="パスワード"
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            fullWidth
+            margin="normal"
+          />
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            ログイン
+          </Button>
+          {error && (
+            <Typography variant="body1" color="error" sx={{ marginTop: 2 }}>
+              {error}
+            </Typography>
+          )}
+        </form>
+      </Box>
+    </Container>
   );
 };
 

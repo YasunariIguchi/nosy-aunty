@@ -11,7 +11,7 @@ export default function PasteButton({ inputTextRef }) {
   }
   return (
     <Button variant="contained" startIcon={<ContentCopy />} onClick={handleClick}>
-      Paste
+      貼り付け
     </Button>
   );
 }

@@ -99,9 +99,9 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
             </Typography>
 
             {isLoggedIn ? (
-              <Button color="inherit" onClick={handleLogout}>Logout</Button>
+              <Button color="inherit" onClick={handleLogout}>ログアウト</Button>
             ) : (
-              <Button color="inherit" component={Link} to="/login">Login</Button>
+              <Button color="inherit" component={Link} to="/login">ログイン</Button>
             )}
 
           </Toolbar>

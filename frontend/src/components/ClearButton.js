@@ -6,7 +6,7 @@ export default function ClearButton({ inputTextRef }) {
   }
   return (
     <Button variant="contained" color="error" startIcon={<Cancel />} onClick={handleClick}>
-      Clear
+      クリア
     </Button>
   );
 }
