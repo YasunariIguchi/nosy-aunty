@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
@@ -33,17 +34,21 @@ function Login({ setIsLoggedIn }) {
         }
       );
       console.log(response.status)
-
-      if (response.status === 204) {
-        // ログイン成功時の処理
-        console.log('ログイン成功');
-        setIsLoggedIn(true);
-        navigate('/'); // ログイン後のリダイレクト先を指定
-      } else {
-        console.error('ログインが失敗しました');
-      }
+      // ログイン成功時の処理
+      console.log('ログイン成功');
+      setIsLoggedIn(true);
+      navigate('/'); // ログイン後のリダイレクト先を指定
     } catch (error) {
-      console.error('エラー:', error);
+      if (error.response) {
+        // サーバーからのレスポンスがある場合
+        setError('ログインに失敗しました。ユーザー名とパスワードを確認してください。');
+      } else if (error.request) {
+        // リクエストが送信されたがレスポンスがない場合
+        setError('ネットワークエラーが発生しました。もう一度お試しください。');
+      } else {
+        // リクエストすら送信されなかった場合
+        setError('予期せぬエラーが発生しました。もう一度お試しください。');
+      }
     }
   };
 
@@ -60,6 +65,7 @@ function Login({ setIsLoggedIn }) {
           <input type="password" value={password} onChange={handlePasswordChange} />
         </div>
         <button type="submit">Login</button>
+        {error && <p>{error}</p>}
       </form>
     </div>
   );
