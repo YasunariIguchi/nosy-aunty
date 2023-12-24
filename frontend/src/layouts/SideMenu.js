@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 
 const SideMenu = ({ isMenuOpen, setIsMenuOpen, isLoggedIn }) => {
   // サイドメニューの項目やクリック時の処理をここに追加
+  const handleMenuItemClick = () => {
+    setIsMenuOpen(false); // メニューを閉じる
+  };
+
 
   return (
     <Drawer
@@ -12,11 +16,11 @@ const SideMenu = ({ isMenuOpen, setIsMenuOpen, isLoggedIn }) => {
     >
       <List>
         {/* メニュー項目のリスト */}
-        <ListItem button component={Link} to="/">
+        <ListItem button component={Link} to="/" onClick={handleMenuItemClick}>
           <ListItemText primary="トップ" />
         </ListItem>
         {isLoggedIn && ( // ログインしている場合のみ会話履歴を表示
-          <ListItem button component={Link} to="/conversations">
+          <ListItem button component={Link} to="/conversations" onClick={handleMenuItemClick}>
             <ListItemText primary="会話履歴" />
           </ListItem>
         )}
