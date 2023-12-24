@@ -51,15 +51,18 @@ const ConversationDetail = () => {
           <Typography variant="h4" gutterBottom style={{ alignSelf: 'flex-start' }}>
             会話履歴詳細
           </Typography>
+          <Typography style={{ alignSelf: 'flex-start' }}>
+            投稿日時: {conversation.created_at}
+          </Typography>
           <div className="split-panel">
-                <div className="scrollable-panel" style={{ backgroundColor: theme.palette.primary.main }}>
-                  <div className="centered-content">
-                    <Typography variant="h6" style={{ color: theme.palette.common.white }}>投稿内容</Typography>
+            <div className="scrollable-panel" style={{ backgroundColor: theme.palette.primary.main }}>
+              <div className="centered-content">
+                <Typography variant="h6" style={{ color: theme.palette.common.white }}><b>投稿内容</b></Typography>
               </div>
             </div>
-                <div className="scrollable-panel" style={{ backgroundColor: theme.palette.primary.main }}>
-                  <div className="centered-content">
-                    <Typography variant="h6" style={{ color: theme.palette.common.white }}>アドバイス</Typography>
+            <div className="scrollable-panel" style={{ backgroundColor: theme.palette.primary.main }}>
+              <div className="centered-content">
+                <Typography variant="h6" style={{ color: theme.palette.common.white }}><b>おばちゃんからのアドバイス</b></Typography>
               </div>
             </div>
           </div>
