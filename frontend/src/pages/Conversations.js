@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 
 const ConversationList = () => {
   const [conversationList, setConversationList] = useState([]);
@@ -40,26 +40,31 @@ const ConversationList = () => {
 
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>投稿日時</TableCell>
-            <TableCell>投稿内容</TableCell>
-            <TableCell>おばちゃんのアドバイス</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {conversationList.map((conversation) => (
-            <TableRow key={conversation.id}>
-              <TableCell>{truncateString(conversation.created_at)}</TableCell>
-              <TableCell>{truncateString(conversation.line, 20)}</TableCell>
-              <TableCell>{truncateString(conversation.advice, 20)}</TableCell>
+    <div>
+      <Typography variant="h4" gutterBottom>
+        おばちゃんとの会話履歴
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell><b>投稿日時</b></TableCell>
+              <TableCell><b>投稿内容</b></TableCell>
+              <TableCell><b>おばちゃんのアドバイス</b></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {conversationList.map((conversation) => (
+              <TableRow key={conversation.id}>
+                <TableCell>{truncateString(conversation.created_at)}</TableCell>
+                <TableCell>{truncateString(conversation.line, 30)}</TableCell>
+                <TableCell>{truncateString(conversation.advice, 30)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 
 };
