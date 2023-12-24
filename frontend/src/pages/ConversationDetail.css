@@ -1,0 +1,48 @@
+/* ConversationDetail.css */
+.conversation-detail-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.conversation-detail-content {
+  width: 80%;
+  height: 100%;
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 水平方向に中央寄せ */
+    justify-content: center;
+    /* 垂直方向に中央寄せ */
+}
+
+.split-panel {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.scrollable-panel {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  /*background-color: #f9f9f9;*/
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 5px;
+  box-sizing: border-box;
+  max-height: calc(60vh - 40px);
+}
+
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
