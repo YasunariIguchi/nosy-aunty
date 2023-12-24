@@ -67,7 +67,13 @@ class ConversationController extends Controller
      * @return void
      */
     public function fetch(Request $request) {
-        $conversation = Conversation::find($request->id);
+        $conversation = Conversation::findOrFail($request->id);
+        $userId = Auth::id();
+        if ($conversation->user_id !== $userId) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // 一致する場合は会話履歴を返す
         return response()->json($conversation);
     }
     /**

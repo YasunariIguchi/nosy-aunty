@@ -5,6 +5,7 @@ import Top from "./pages/Top";
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import ConversationList from './pages/Conversations';
+import ConversationDetail from './pages/ConversationDetail';
 
 
 export default function App() {
@@ -15,7 +16,8 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/" element={<Top />} />
-        <Route path="/conversations" element={<ConversationList />} />
+            <Route path="/conversations" element={<ConversationList />} />
+            <Route path="/conversation/:id" element={<ConversationDetail />} />
           </Routes>
       <Footer />
     </>
