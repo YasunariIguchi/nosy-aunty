@@ -1,0 +1,8 @@
+.conversation-container {
+  display: flex;
+  justify-content: center;
+  width: 80%;
+  /* 適切な幅に調整 */
+  margin: 0 auto;
+  /* 左右の余白を自動的に均等に設定して中央に寄せる */
+}
