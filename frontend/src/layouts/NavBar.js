@@ -115,7 +115,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
           </Toolbar>
         </AppBar>
       </Box>
-      <SideMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      <SideMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isLoggedIn={isLoggedIn} />
     </>
   );
 }
