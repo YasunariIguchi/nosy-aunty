@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,8 +8,15 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import SideMenu from './SideMenu';
 
 export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // メニューバーの開閉状態を管理するstate
+
+  // メニューアイコンがクリックされたときのハンドラ
+  const handleMenuClick = () => {
+    setIsMenuOpen(!isMenuOpen); // メニューバーの開閉状態を反転
+  };
   const navigate = useNavigate();
 
   const checkLoginStatus = () => {
@@ -90,6 +97,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
+              onClick={handleMenuClick} // メニューアイコンがクリックされたときのハンドラを設定
             >
               <MenuIcon />
             </IconButton>
@@ -107,6 +115,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
           </Toolbar>
         </AppBar>
       </Box>
+      <SideMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
     </>
   );
 }
