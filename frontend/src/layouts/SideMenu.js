@@ -12,11 +12,11 @@ const SideMenu = ({ isMenuOpen, setIsMenuOpen }) => {
     >
       <List>
         {/* メニュー項目のリスト */}
-        <ListItem button component={Link} to="/dashboard">
-          <ListItemText primary="Dashboard" />
+        <ListItem button component={Link} to="/">
+          <ListItemText primary="トップ" />
         </ListItem>
-        <ListItem button component={Link} to="/profile">
-          <ListItemText primary="Profile" />
+        <ListItem button component={Link} to="/conversation">
+          <ListItemText primary="会話履歴" />
         </ListItem>
         {/* 他のメニュー項目を追加 */}
       </List>
