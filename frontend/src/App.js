@@ -4,6 +4,8 @@ import Footer from "./layouts/Footer";
 import Top from "./pages/Top";
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
+import ConversationList from './pages/Conversations';
+
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,6 +15,7 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/" element={<Top />} />
+        <Route path="/conversations" element={<ConversationList />} />
           </Routes>
       <Footer />
     </>

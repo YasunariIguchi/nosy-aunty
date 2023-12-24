@@ -16,7 +16,7 @@ const SideMenu = ({ isMenuOpen, setIsMenuOpen, isLoggedIn }) => {
           <ListItemText primary="トップ" />
         </ListItem>
         {isLoggedIn && ( // ログインしている場合のみ会話履歴を表示
-          <ListItem button component={Link} to="/conversation">
+          <ListItem button component={Link} to="/conversations">
             <ListItemText primary="会話履歴" />
           </ListItem>
         )}
