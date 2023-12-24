@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+
+const columns = [
+  { id: 'datetime', label: '投稿日時', minWidth: 170 },
+  { id: 'topic', label: '投稿内容', minWidth: 100 },
+  { id: 'reply', label: 'おばちゃんのアドバイス', minWidth: 100 },
+  { id: 'detail', label: '詳細', minWidth: 100 },
+];
 
 const ConversationList = () => {
   const [conversationList, setConversationList] = useState([]);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   useEffect(() => {
     // 会話履歴を取得するAPIエンドポイントのURL
@@ -39,24 +57,32 @@ const ConversationList = () => {
     return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
   };
 
+  const getPaginatedData = () => {
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    return conversationList.slice(startIndex, endIndex);
+  };
+
 
   return (
-    <div>
-      <TableContainer component={Paper}>
-        <Typography variant="h6" gutterBottom>
-          おばちゃんとの会話履歴
-        </Typography>
-        <Table>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell><b>投稿日時</b></TableCell>
-              <TableCell><b>投稿内容</b></TableCell>
-              <TableCell><b>おばちゃんのアドバイス</b></TableCell>
-              <TableCell><b>詳細</b></TableCell>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {conversationList.map((conversation) => (
+            {getPaginatedData().map((conversation) => (
               <TableRow key={conversation.id}>
                 <TableCell>{truncateString(conversation.created_at)}</TableCell>
                 <TableCell>{truncateString(conversation.line, 30)}</TableCell>
@@ -71,7 +97,16 @@ const ConversationList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={conversationList.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 
 };
