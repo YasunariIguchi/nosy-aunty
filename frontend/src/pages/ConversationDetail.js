@@ -57,10 +57,10 @@ const convertToJST = (utcDate) => {
               <ListItemText primary={`作成日時: ${conversation.created_at}`} />
             </ListItem>
             <ListItem>
-              <ListItemText primary={`ライン: ${conversation.line}`} />
+                  <ListItemText primary={`ライン:\n ${conversation.line}`} style={{ whiteSpace: 'pre-line' }} />
             </ListItem>
             <ListItem>
-              <ListItemText primary={`アドバイス: ${conversation.advice}`} />
+                  <ListItemText primary={`アドバイス:\n ${conversation.advice}`} style={{ whiteSpace: 'pre-line' }} />
             </ListItem>
           </List>
         </div>
