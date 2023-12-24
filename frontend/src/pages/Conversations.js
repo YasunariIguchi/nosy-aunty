@@ -4,10 +4,10 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Table
 import { Link } from 'react-router-dom';
 
 const columns = [
-  { id: 'datetime', label: '投稿日時', minWidth: 170 },
+  { id: 'datetime', label: '投稿日時', minWidth: 100 },
   { id: 'topic', label: '投稿内容', minWidth: 100 },
   { id: 'reply', label: 'おばちゃんのアドバイス', minWidth: 100 },
-  { id: 'detail', label: '詳細', minWidth: 100 },
+  { id: 'detail', label: '詳細', minWidth: 100, align: 'center' },
 ];
 
 const ConversationList = () => {
@@ -66,7 +66,10 @@ const ConversationList = () => {
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <Typography variant="h5" gutterBottom>
+        おばちゃんとの会話履歴
+      </Typography>
+      <TableContainer sx={{ maxHeight: 480 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -76,7 +79,7 @@ const ConversationList = () => {
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
-                  {column.label}
+                  <b>{column.label}</b>
                 </TableCell>
               ))}
             </TableRow>
