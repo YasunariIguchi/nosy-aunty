@@ -8,7 +8,7 @@ import './ConversationList.css';
 const columns = [
   { id: 'datetime', label: '投稿日時', minWidth: 100 },
   { id: 'topic', label: '投稿内容', minWidth: 100 },
-  { id: 'reply', label: 'おばちゃんのアドバイス', minWidth: 100 },
+  { id: 'reply', label: 'おばちゃんからのアドバイス', minWidth: 100 },
   { id: 'detail', label: '詳細', minWidth: 100, align: 'center' },
 ];
 
