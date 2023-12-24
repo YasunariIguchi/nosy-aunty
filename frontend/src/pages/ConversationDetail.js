@@ -1,13 +1,19 @@
-// ConversationDetail.js
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Typography, List, ListItem, ListItemText, CircularProgress } from '@mui/material';
+import './ConversationDetail.css';
 
 const ConversationDetail = () => {
-  const { id } = useParams(); // URLパラメータからIDを取得
-  const [conversation, setConversation] = useState(null);
-  const [error, setError] = useState(null); // エラー状態を管理
+const { id } = useParams(); // URLパラメータからIDを取得
+const [conversation, setConversation] = useState(null);
+const [error, setError] = useState(null); // エラー状態を管理
+const [loading, setLoading] = useState(true); // データ読み込み中を管理
+
+const convertToJST = (utcDate) => {
+  const convertedDate = new Date(utcDate);
+  return convertedDate.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+};
 
   useEffect(() => {
     // APIから会話履歴の詳細を取得する関数
@@ -18,10 +24,17 @@ const ConversationDetail = () => {
           withXSRFToken: true,
           // 他の必要なオプションがあればここに追加
         });
-        setConversation(response.data);
+        const updatedConversation = {
+          ...response.data,
+          created_at: convertToJST(response.data.created_at),
+          // 他の日付も必要に応じて変換できます
+        };
+        setConversation(updatedConversation);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching conversation detail:', error);
         setError('会話履歴を取得できませんでした。'); // エラーが起きた場合のメッセージ
+        setLoading(false);
       }
     };
 
@@ -29,18 +42,30 @@ const ConversationDetail = () => {
   }, [id]); // idが変更された時のみ再実行
 
   return (
-    <div>
-      <h2>会話履歴詳細</h2>
-      {error ? (
-        <p>{error}</p> // エラーメッセージの表示
+    <div className="conversation-detail-container">
+      {loading ? (
+        <CircularProgress />
+      ) : error ? (
+        <Typography color="error">{error}</Typography>
       ) : conversation ? (
-        <div>
-          <p>作成日時: {conversation.created_at}</p>
-          <p>ライン: {conversation.line}</p>
-          <p>アドバイス: {conversation.advice}</p>
+        <div className="conversation-detail-content">
+          <Typography variant="h4" gutterBottom>
+            会話履歴詳細
+          </Typography>
+          <List>
+            <ListItem>
+              <ListItemText primary={`作成日時: ${conversation.created_at}`} />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary={`ライン: ${conversation.line}`} />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary={`アドバイス: ${conversation.advice}`} />
+            </ListItem>
+          </List>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Typography>Loading...</Typography>
       )}
     </div>
   );
