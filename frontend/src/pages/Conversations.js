@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const ConversationList = () => {
   const [conversationList, setConversationList] = useState([]);
@@ -41,16 +42,17 @@ const ConversationList = () => {
 
   return (
     <div>
-      <Typography variant="h4" gutterBottom>
-        おばちゃんとの会話履歴
-      </Typography>
       <TableContainer component={Paper}>
+        <Typography variant="h6" gutterBottom>
+          おばちゃんとの会話履歴
+        </Typography>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell><b>投稿日時</b></TableCell>
               <TableCell><b>投稿内容</b></TableCell>
               <TableCell><b>おばちゃんのアドバイス</b></TableCell>
+              <TableCell><b>詳細</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -59,6 +61,11 @@ const ConversationList = () => {
                 <TableCell>{truncateString(conversation.created_at)}</TableCell>
                 <TableCell>{truncateString(conversation.line, 30)}</TableCell>
                 <TableCell>{truncateString(conversation.advice, 30)}</TableCell>
+                <TableCell align="center">
+                  <Button component={Link} to={`/conversation/${conversation.id}`} variant="contained" color="primary">
+                    詳細確認
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
