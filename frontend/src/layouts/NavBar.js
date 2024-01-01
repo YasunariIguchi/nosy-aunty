@@ -13,19 +13,21 @@ import { Menu, MenuItem } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person'; // Import the user icon
 
 export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage the sidebar display
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State to manage user menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [userName, setUserName] = useState(''); // State to store user name
 
   const userMenuRef = useRef(null);
   const userIconRef = useRef(null);
 
   const handleMenuClick = () => {
-    setIsMenuOpen(!isMenuOpen); // メニューバーの開閉状態を反転
+    setIsMenuOpen(!isMenuOpen);
   };
+
   const navigate = useNavigate();
 
   const handleUserMenuClick = () => {
-    setIsUserMenuOpen(!isUserMenuOpen); // Toggle user menu display
+    setIsUserMenuOpen(!isUserMenuOpen);
   };
 
   const handleClickInsideMenu = (e) => {
@@ -45,6 +47,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
       .then((response) => {
         if (response.data) {
           setIsLoggedIn(true); // ログイン済みの場合、isLoggedInをtrueに設定
+          setUserName(response.data.name)
         }
       })
       .catch((error) => {
@@ -129,7 +132,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
-              onClick={handleMenuClick} // メニューアイコンがクリックされたときのハンドラを設定
+              onClick={handleMenuClick}
             >
               <MenuIcon />
             </IconButton>
@@ -138,35 +141,46 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
               おせっかいおばちゃん
             </Typography>
 
+            {/* User Info */}
+            {isLoggedIn && (
+              <Typography variant="subtitle1" sx={{ mr: 2 }}>
+                {userName}
+              </Typography>
+            )}
+
             {/* User Icon/Button */}
-            <IconButton
-              ref={userIconRef}
-              color="inherit"
-              aria-label="user-menu"
-              onClick={handleUserMenuClick} // Handle click on user icon
-              style={{ display: isLoggedIn ? 'inline-block' : 'none' }}
-            >
-              <PersonIcon />
-            </IconButton>
-            {/* User Menu */}
-            <Menu
-              anchorEl={userIconRef.current}
-              open={isUserMenuOpen}
-              onClose={() => setIsUserMenuOpen(false)}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              getContentAnchorEl={null}
-              style={{ marginTop: '35px' }} 
-            >
-              <MenuItem component={Link} to="/user">ユーザー情報編集</MenuItem>
-              <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
-            </Menu>
+            <div ref={userIconRef} style={{ position: 'relative', display: 'inline-block' }}>
+              <IconButton
+                color="inherit"
+                aria-label="user-menu"
+                onClick={handleUserMenuClick}
+                style={{ display: isLoggedIn ? 'inline-block' : 'none' }}
+              >
+                <PersonIcon />
+              </IconButton>
+
+              {/* Menu directly below the user icon */}
+              <Menu
+                anchorEl={userIconRef.current}
+                open={isUserMenuOpen}
+                onClose={() => setIsUserMenuOpen(false)}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                getContentAnchorEl={null}
+                style={{ marginTop: '35px' }} // Adjust the top margin as needed
+              >
+                <MenuItem component={Link} to="/user">ユーザー情報編集</MenuItem>
+                <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
+              </Menu>
+            </div>
+
+            {/* Login Button */}
             <Button color="inherit" component={Link} to="/login" style={{ display: !isLoggedIn ? 'inline-block' : 'none' }}>
               ログイン
             </Button>
@@ -174,7 +188,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
         </AppBar>
       </Box>
 
-
+      {/* Side Menu */}
       <SideMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isLoggedIn={isLoggedIn} />
     </>
   );
