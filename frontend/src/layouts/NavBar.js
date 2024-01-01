@@ -9,15 +9,20 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import SideMenu from './SideMenu';
+import PersonIcon from '@mui/icons-material/Person'; // Import the user icon
 
 export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // メニューバーの開閉状態を管理するstate
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage the sidebar display
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State to manage user menu
 
-  // メニューアイコンがクリックされたときのハンドラ
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen); // メニューバーの開閉状態を反転
   };
   const navigate = useNavigate();
+
+  const handleUserMenuClick = () => {
+    setIsUserMenuOpen(!isUserMenuOpen); // Toggle user menu display
+  };
 
   const checkLoginStatus = () => {
     // ログイン状態を取得するAPIリクエスト
@@ -86,6 +91,16 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
         .navbar-wrapper {
           margin-bottom: 88px;
         }
+        /* Add any additional styling for the user menu here */
+        .user-menu {
+          position: absolute;
+          top: 50px; /* Adjust the position as needed */
+          right: 20px; /* Adjust the position as needed */
+          background-color: white;
+          border: 1px solid #ccc;
+          padding: 10px;
+          display: ${isUserMenuOpen ? 'block' : 'none'}; // Show/hide based on state
+        }
       `}</style>
       <Box sx={{ flexGrow: 1 }} className="navbar-wrapper">
         <AppBar position="fixed">
@@ -106,15 +121,40 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
               おせっかいおばちゃん
             </Typography>
 
-            {isLoggedIn ? (
-              <Button color="inherit" onClick={handleLogout}>ログアウト</Button>
-            ) : (
-              <Button color="inherit" component={Link} to="/login">ログイン</Button>
-            )}
+            {/* User Icon/Button */}
+            <IconButton
+              color="inherit"
+              aria-label="user-menu"
+              onClick={handleUserMenuClick} // Handle click on user icon
+            >
+              <PersonIcon />
+            </IconButton>
 
+            {isLoggedIn ? (
+              <Button color="inherit" onClick={handleLogout}>
+                ログアウト
+              </Button>
+            ) : (
+              <Button color="inherit" component={Link} to="/login">
+                ログイン
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
+
+      {/* User Menu */}
+      <div className="user-menu">
+        <ul>
+          <li>
+            <a href="/user">ユーザー情報編集</a>
+          </li>
+          <li>
+            <button onClick={handleLogout}>ログアウト</button>
+          </li>
+        </ul>
+      </div>
+
       <SideMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isLoggedIn={isLoggedIn} />
     </>
   );
