@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Typography, CircularProgress } from '@mui/material';
 import './ConversationDetail.css';
 import { useTheme } from '@mui/material/styles';
+import BackButton from '../components/BackButton';
 
 const ConversationDetail = () => {
   const theme = useTheme();
@@ -78,6 +79,9 @@ const ConversationDetail = () => {
       ) : (
         <Typography>Loading...</Typography>
       )}
+      <div style={{ marginTop: '20px' }}>
+        <BackButton />
+      </div>
     </div>
   );
 };
