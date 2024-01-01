@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,6 +15,9 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage the sidebar display
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // State to manage user menu
 
+  const userMenuRef = useRef(null);
+  const userIconRef = useRef(null);
+
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen); // メニューバーの開閉状態を反転
   };
@@ -22,6 +25,13 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
 
   const handleUserMenuClick = () => {
     setIsUserMenuOpen(!isUserMenuOpen); // Toggle user menu display
+  };
+
+  const handleClickInsideMenu = (e) => {
+    if (userMenuRef.current.contains(e.target) || userIconRef.current.contains(e.target)) {
+      return;
+    }
+    setIsUserMenuOpen(false);
   };
 
   const checkLoginStatus = () => {
@@ -59,6 +69,11 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
       .catch((error) => {
         console.error('ログイン状態の取得に失敗しました:', error);
       });*/
+    document.addEventListener('mousedown', handleClickInsideMenu);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickInsideMenu);
+    };
   }, []);
 
 
@@ -77,6 +92,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
         // ログアウト後のフロントエンド側の処理を追加する場合はここに記述
         setIsLoggedIn(false);    // ログアウト処理を行う
         navigate('/login'); // ログアウト後、ログインページにリダイレクト
+        setIsUserMenuOpen(false);
       })
       .catch((error) => {
         // ログアウトが失敗した場合の処理
@@ -123,28 +139,25 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
 
             {/* User Icon/Button */}
             <IconButton
+              ref={userIconRef}
               color="inherit"
               aria-label="user-menu"
               onClick={handleUserMenuClick} // Handle click on user icon
+              style={{ display: isLoggedIn ? 'inline-block' : 'none' }}
             >
               <PersonIcon />
             </IconButton>
 
-            {isLoggedIn ? (
-              <Button color="inherit" onClick={handleLogout}>
-                ログアウト
-              </Button>
-            ) : (
-              <Button color="inherit" component={Link} to="/login">
-                ログイン
-              </Button>
-            )}
+
+            <Button color="inherit" component={Link} to="/login" style={{ display: !isLoggedIn ? 'inline-block' : 'none' }}>
+              ログイン
+            </Button>
           </Toolbar>
         </AppBar>
       </Box>
 
       {/* User Menu */}
-      <div className="user-menu">
+      <div className="user-menu" ref={userMenuRef}>
         <ul>
           <li>
             <a href="/user">ユーザー情報編集</a>
