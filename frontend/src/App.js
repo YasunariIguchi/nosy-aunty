@@ -11,15 +11,16 @@ import UserProfile from './pages/UserProfile';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} userName={userName} setUserName={setUserName} />
           <Routes>
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/" element={<Top />} />
             <Route path="/conversations" element={<ConversationList />} />
             <Route path="/conversation/:id" element={<ConversationDetail />} />
-            <Route path="/user" element={<UserProfile />} />
+        <Route path="/user" element={<UserProfile setUserName={setUserName} />} />
           </Routes>
       <Footer />
     </>

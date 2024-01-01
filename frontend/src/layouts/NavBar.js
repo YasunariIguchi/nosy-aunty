@@ -12,10 +12,9 @@ import SideMenu from './SideMenu';
 import { Menu, MenuItem } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person'; // Import the user icon
 
-export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
+export default function NavBar({ isLoggedIn, setIsLoggedIn, userName, setUserName }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [userName, setUserName] = useState(''); // State to store user name
 
   const userMenuRef = useRef(null);
   const userIconRef = useRef(null);
@@ -172,7 +171,6 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
-                getContentAnchorEl={null}
                 style={{ marginTop: '35px' }} // Adjust the top margin as needed
               >
                 <MenuItem component={Link} to="/user">ユーザー情報編集</MenuItem>

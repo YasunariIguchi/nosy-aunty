@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 
-const UserProfile = () => {
+const UserProfile = ({ setUserName }) => {
   const [userData, setUserData] = useState({});
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -70,6 +70,7 @@ const UserProfile = () => {
         // 成功した場合、通知を表示しリダイレクトする
         alert(response.data.message); // 通知を表示するための例（適切なUIライブラリや方法を使用することをお勧めします）
         // リダイレクト処理（例：React Routerの場合）
+        setUserName(name)
         navigate('/'); // リダイレクト先のパスを指定
       }
     } catch (error) {
