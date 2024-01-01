@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, tableCellClasses,  TableContainer, TableHead, TableRow, TablePagination, Paper, Typography, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import './ConversationList.css';
 
@@ -36,17 +36,34 @@ const ConversationList = () => {
   const [conversationList, setConversationList] = useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('page', newPage + 1);
+    navigate(`?${searchParams.toString()}`);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('page', 1); // ページをリセット
+    searchParams.set('rowsPerPage', +event.target.value);
+    navigate(`?${searchParams.toString()}`);
   };
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const pageParam = searchParams.get('page');
+    const rowsPerPageParam = searchParams.get('rowsPerPage');
+
+    if (pageParam && rowsPerPageParam) {
+      setPage(parseInt(pageParam) - 1);
+      setRowsPerPage(parseInt(rowsPerPageParam));
+    }
     // 会話履歴を取得するAPIエンドポイントのURL
     const apiUrl = process.env.REACT_APP_API + "/conversations";
 
@@ -73,7 +90,7 @@ const ConversationList = () => {
       .catch((error) => {
         console.error('会話履歴の取得に失敗しました:', error);
       });
-  }, []); // ページ遷移時に1度だけ実行される
+  }, [location.search]); // ページ遷移時に1度だけ実行される
 
   const truncateString = (str, maxLength) => {
     return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
@@ -114,7 +131,9 @@ const ConversationList = () => {
                   <StyledTableCell>{truncateString(conversation.line, 30)}</StyledTableCell>
                   <StyledTableCell>{truncateString(conversation.advice, 30)}</StyledTableCell>
                   <StyledTableCell align="center">
-                    <Button component={Link} to={`/conversation/${conversation.id}`} variant="contained" color="primary">
+                    <Button component={Link} to={{
+                      pathname: `/conversation/${conversation.id}`,
+                      search: `?page=${page + 1}&rowsPerPage=${rowsPerPage}`,}} variant="contained" color="primary">
                       詳細確認
                     </Button>
                   </StyledTableCell>
