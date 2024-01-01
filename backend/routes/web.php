@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 
 /*
@@ -28,8 +29,9 @@ Route::middleware([])->group(function () {
     Route::delete('conversation/{id}', [ConversationController::class, 'delete']);
 });
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', function (Request $request) {return $request->user();});
+    Route::put('/user', [UserController::class, 'update']);
 });
 
 require __DIR__.'/auth.php';

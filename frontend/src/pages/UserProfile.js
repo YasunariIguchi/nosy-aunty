@@ -8,6 +8,7 @@ const UserProfile = () => {
   const [userData, setUserData] = useState({});
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [error, setError] = useState(''); 
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -33,14 +34,36 @@ const UserProfile = () => {
   };
 
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+    const inputValue = e.target.value;
+
+    if (!validateEmail(inputValue)) {
+      // 不正な形式の場合、エラーメッセージをセットする
+      setError('正しいEメールアドレスを入力してください');
+    } else {
+      // 正しい形式の場合、エラーメッセージをクリアする
+      setError('');
+    }
+
+    setEmail(inputValue);
+  };
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (error) {
+      return;
+    }
     try {
       const updatedUserData = { ...userData, name, email };
-      const response = await axios.put(`${process.env.REACT_APP_API}/user`, updatedUserData);
+      const response = await axios.put(`${process.env.REACT_APP_API}/user`, updatedUserData, {
+        withCredentials: true,
+        withXSRFToken: true,
+        // 他の必要なオプションがあればここに追加
+      });
       console.log('User data updated:', response.data);
     } catch (error) {
       console.error('Error updating user data:', error);
@@ -63,6 +86,8 @@ const UserProfile = () => {
             variant="outlined"
             value={email}
             onChange={handleEmailChange}
+            error={Boolean(error)} // エラーがある場合にエラースタイルを適用
+            helperText={error} // エラーメッセージを表示
           />
           <Button variant="contained" type="submit">
             変更を保存
