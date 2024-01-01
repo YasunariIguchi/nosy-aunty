@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import SideMenu from './SideMenu';
+import { Menu, MenuItem } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person'; // Import the user icon
 
 export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
@@ -28,7 +29,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
   };
 
   const handleClickInsideMenu = (e) => {
-    if (userMenuRef.current.contains(e.target) || userIconRef.current.contains(e.target)) {
+    if (userMenuRef.current && userMenuRef.current.contains(e.target) || (userIconRef.current && userIconRef.current.contains(e.target))) {
       return;
     }
     setIsUserMenuOpen(false);
@@ -147,8 +148,25 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
             >
               <PersonIcon />
             </IconButton>
-
-
+            {/* User Menu */}
+            <Menu
+              anchorEl={userIconRef.current}
+              open={isUserMenuOpen}
+              onClose={() => setIsUserMenuOpen(false)}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              getContentAnchorEl={null}
+              style={{ marginTop: '35px' }} 
+            >
+              <MenuItem component={Link} to="/user">ユーザー情報編集</MenuItem>
+              <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
+            </Menu>
             <Button color="inherit" component={Link} to="/login" style={{ display: !isLoggedIn ? 'inline-block' : 'none' }}>
               ログイン
             </Button>
@@ -156,17 +174,6 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn }) {
         </AppBar>
       </Box>
 
-      {/* User Menu */}
-      <div className="user-menu" ref={userMenuRef}>
-        <ul>
-          <li>
-            <a href="/user">ユーザー情報編集</a>
-          </li>
-          <li>
-            <button onClick={handleLogout}>ログアウト</button>
-          </li>
-        </ul>
-      </div>
 
       <SideMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isLoggedIn={isLoggedIn} />
     </>
