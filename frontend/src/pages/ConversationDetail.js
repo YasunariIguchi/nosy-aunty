@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Typography, CircularProgress } from '@mui/material';
 import './ConversationDetail.css';
 import { useTheme } from '@mui/material/styles';
+import BackButton from '../components/BackButton';
 
 const ConversationDetail = () => {
   const theme = useTheme();
   const { id } = useParams();
+  const location = useLocation();
   const [conversation, setConversation] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const convertToJST = (utcDate) => {
     const convertedDate = new Date(utcDate);
@@ -18,6 +22,14 @@ const ConversationDetail = () => {
   };
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const pageParam = searchParams.get('page');
+    const rowsPerPageParam = searchParams.get('rowsPerPage');
+    if (pageParam && rowsPerPageParam) {
+      setPage(parseInt(pageParam) - 1);
+      setRowsPerPage(parseInt(rowsPerPageParam));
+    }
+
     const fetchConversationDetail = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API}/conversation/${id}`, {
@@ -38,7 +50,7 @@ const ConversationDetail = () => {
     };
 
     fetchConversationDetail();
-  }, [id]);
+  }, [id, location.search, page, rowsPerPage]);
 
   return (
     <div className="conversation-detail-container">
@@ -78,6 +90,9 @@ const ConversationDetail = () => {
       ) : (
         <Typography>Loading...</Typography>
       )}
+      <div style={{ marginTop: '20px' }}>
+        <BackButton page={page + 1} rowsPerPage={rowsPerPage} />
+      </div>
     </div>
   );
 };
