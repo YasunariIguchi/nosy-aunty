@@ -3,12 +3,14 @@ import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
   const [userData, setUserData] = useState({});
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [error, setError] = useState(''); 
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -64,9 +66,19 @@ const UserProfile = () => {
         withXSRFToken: true,
         // 他の必要なオプションがあればここに追加
       });
-      console.log('User data updated:', response.data);
+      if (response.data.success) {
+        // 成功した場合、通知を表示しリダイレクトする
+        alert(response.data.message); // 通知を表示するための例（適切なUIライブラリや方法を使用することをお勧めします）
+        // リダイレクト処理（例：React Routerの場合）
+        navigate('/'); // リダイレクト先のパスを指定
+      }
     } catch (error) {
       console.error('Error updating user data:', error);
+      if (error.response && error.response.data && !error.response.data.success) {
+        alert(error.response.data.message); // エラーメッセージの表示
+      } else {
+        alert('ユーザー情報の更新に失敗しました。'); // デフォルトのエラーメッセージ
+      }
     }
   };
 
