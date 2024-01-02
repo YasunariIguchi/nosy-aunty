@@ -17,7 +17,7 @@ export default function App() {
     <>
       <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} userName={userName} setUserName={setUserName} />
       <Routes>
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/" element={<Top />} />
         <Route path="/conversations" element={<ConversationList />} />
         <Route path="/conversation/:id" element={<ConversationDetail />} />

@@ -1,13 +1,19 @@
 import axios from "axios";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, TextField, Typography, Box, Container } from '@mui/material';
 
-function Login({ setIsLoggedIn }) {
+function Login({ isLoggedIn, setIsLoggedIn }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
