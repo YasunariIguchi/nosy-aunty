@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button, TextField, Typography, Box, Container } from '@mui/material';
 
 function Login({ isLoggedIn, setIsLoggedIn }) {
@@ -82,6 +82,13 @@ function Login({ isLoggedIn, setIsLoggedIn }) {
               {error}
             </Typography>
           )}
+          <Box sx={{ marginTop: 2 }}>
+            <Link to="/register" style={{ textDecoration: 'none' }}>
+              <Button variant="outlined" color="primary" fullWidth>
+                ユーザー登録
+              </Button>
+            </Link>
+          </Box>
         </form>
       </Box>
     </Container>
