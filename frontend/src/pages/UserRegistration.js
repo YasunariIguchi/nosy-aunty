@@ -9,7 +9,11 @@ const UserRegistration = ({ isLoggedIn }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [confirmError, setConfirmError] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,23 +23,31 @@ const UserRegistration = ({ isLoggedIn }) => {
   }, [isLoggedIn, navigate]);
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    const inputValue = e.target.value;
+    setName(inputValue);
+
+    if (!validateName(inputValue)) {
+      setNameError('名前は1〜255文字で入力してください');
+    } else {
+      setNameError('');
+    }
+  };
+
+
+  const validateName = (name) => {
+    return name.trim() !== '' && name.length <= 255;
   };
 
   const handleEmailChange = (e) => {
     const inputValue = e.target.value;
 
     if (!validateEmail(inputValue)) {
-      setError('正しいEメールアドレスを入力してください');
+      setEmailError('正しいEメールアドレスを入力してください');
     } else {
-      setError('');
+      setEmailError('');
     }
 
     setEmail(inputValue);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
   };
 
   const validateEmail = (email) => {
@@ -43,12 +55,44 @@ const UserRegistration = ({ isLoggedIn }) => {
     return re.test(String(email).toLowerCase());
   };
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (confirmPassword) {
+      if (e.target.value !== confirmPassword) {
+        setConfirmError('パスワードが一致しません');
+      } else {
+        setConfirmError('');
+      }
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const inputValue = e.target.value;
+    setConfirmPassword(inputValue);
+
+    if (inputValue !== password) {
+      setConfirmError('パスワードが一致しません');
+    } else {
+      setConfirmError('');
+    }
+  };
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (error || !name || !email || !password) {
-      setError('全ての項目を正しく入力してください');
+    if (!validateEmail(email) || !validateName(name) || password !== confirmPassword) {
+      if (!validateName(name)) {
+        setNameError('名前は空白でない255文字以内で入力してください');
+      }
+      if (!validateEmail(email)) {
+        setEmailError('正しいEメールアドレスを入力してください');
+      }
+      if (password !== confirmPassword) {
+        setConfirmError('パスワードが一致しません');
+      }
       return;
-    }
+    }    
     try {
       const userData = { name, email, password };
       const response = await axios.post(`${process.env.REACT_APP_API}/register`, userData, {
@@ -79,14 +123,16 @@ const UserRegistration = ({ isLoggedIn }) => {
             variant="outlined"
             value={name}
             onChange={handleNameChange}
+            error={Boolean(nameError)}
+            helperText={nameError}
           />
           <TextField
             label="Eメールアドレス"
             variant="outlined"
             value={email}
             onChange={handleEmailChange}
-            error={Boolean(error)}
-            helperText={error}
+            error={Boolean(emailError)}
+            helperText={emailError}
           />
           <TextField
             type="password"
@@ -94,6 +140,15 @@ const UserRegistration = ({ isLoggedIn }) => {
             variant="outlined"
             value={password}
             onChange={handlePasswordChange}
+          />
+          <TextField
+            type="password"
+            label="パスワード（確認用）"
+            variant="outlined"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+            error={Boolean(confirmError)}
+            helperText={confirmError}
           />
           <Button variant="contained" type="submit">
             登録する
