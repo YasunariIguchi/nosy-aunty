@@ -26,6 +26,10 @@ class RegisteredUserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
                 'password' => ['required', 'confirmed', Rules\Password::min(8)->mixedCase()->numbers()],
+            ], [], [
+                'name' => 'お名前',
+                'email' => 'メールアドレス',
+                'password' => 'パスワード',
             ]);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
