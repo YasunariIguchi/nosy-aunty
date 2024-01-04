@@ -12,6 +12,7 @@ const UserRegistration = ({ isLoggedIn }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
 
   const navigate = useNavigate();
@@ -57,6 +58,11 @@ const UserRegistration = ({ isLoggedIn }) => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    if (!validatePassword(e.target.value)) {
+      setPasswordError('パスワードは8文字以上で、大文字・小文字・数字をそれぞれ1文字以上含めてください');
+    } else {
+      setPasswordError('');
+    }
     if (confirmPassword) {
       if (e.target.value !== confirmPassword) {
         setConfirmError('パスワードが一致しません');
@@ -64,6 +70,11 @@ const UserRegistration = ({ isLoggedIn }) => {
         setConfirmError('');
       }
     }
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    return passwordRegex.test(password);
   };
 
   const handleConfirmPasswordChange = (e) => {
@@ -140,6 +151,8 @@ const UserRegistration = ({ isLoggedIn }) => {
             variant="outlined"
             value={password}
             onChange={handlePasswordChange}
+            error={Boolean(passwordError)}
+            helperText={passwordError}
           />
           <TextField
             type="password"
