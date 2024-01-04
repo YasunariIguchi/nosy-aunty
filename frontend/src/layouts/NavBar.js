@@ -30,7 +30,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn, userName, setUserNam
   };
 
   const handleClickInsideMenu = (e) => {
-    if (userMenuRef.current && userMenuRef.current.contains(e.target) || (userIconRef.current && userIconRef.current.contains(e.target))) {
+    if ((userMenuRef.current && userMenuRef.current.contains(e.target)) || (userIconRef.current && userIconRef.current.contains(e.target))) {
       return;
     }
     setIsUserMenuOpen(false);
