@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 
-const UserRegistration = ({ isLoggedIn }) => {
+const UserRegistration = ({ isLoggedIn, setIsLoggedIn, setUserName }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -105,22 +105,32 @@ const UserRegistration = ({ isLoggedIn }) => {
       return;
     }    
     try {
-      const userData = { name, email, password };
+      const userData = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "password_confirmation": confirmPassword
+      };
       const response = await axios.post(`${process.env.REACT_APP_API}/register`, userData, {
         withCredentials: true,
+        withXSRFToken: true,
         // 他の必要なオプションがあればここに追加
       });
-      if (response.data.success) {
-        alert(response.data.message);
-        navigate('/login');
+      if (response.status === 200) {
+        setUserName(response.data.name);
+        setIsLoggedIn(true);
+        alert('ユーザー登録が完了しました。');
+        navigate('/');
       }
     } catch (error) {
       console.error('Error registering user:', error);
-      if (error.response && error.response.data && !error.response.data.success) {
-        alert(error.response.data.message);
+      let errorMessage = 'ユーザー登録に失敗しました。\n'; // エラーメッセージの先頭に付ける文字列
+      if (error.response && error.response.data && error.response.data.errors) {
+        errorMessage += Object.values(error.response.data.errors).join("\n");
       } else {
-        alert('ユーザー登録に失敗しました。');
+        errorMessage += 'サーバーエラーが発生しました。'; // エラーメッセージが明確でない場合のデフォルトメッセージ
       }
+      alert(errorMessage);
     }
   };
 

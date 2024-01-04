@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/conversations" element={<ConversationList />} />
         <Route path="/conversation/:id" element={<ConversationDetail />} />
         <Route path="/user" element={<UserProfile setUserName={setUserName} />} />
-        <Route path="/register" element={<UserRegistration isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/register" element={<UserRegistration isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUserName={setUserName} />} />
       </Routes>
       <Footer />
     </>
