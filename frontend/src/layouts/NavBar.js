@@ -94,6 +94,7 @@ export default function NavBar({ isLoggedIn, setIsLoggedIn, userName, setUserNam
         console.log('ログアウトしました:', response);
         // ログアウト後のフロントエンド側の処理を追加する場合はここに記述
         setIsLoggedIn(false);    // ログアウト処理を行う
+        setUserName('');
         navigate('/login'); // ログアウト後、ログインページにリダイレクト
         setIsUserMenuOpen(false);
       })

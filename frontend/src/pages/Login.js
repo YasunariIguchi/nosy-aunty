@@ -1,13 +1,19 @@
 import axios from "axios";
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button, TextField, Typography, Box, Container } from '@mui/material';
 
-function Login({ setIsLoggedIn }) {
+function Login({ isLoggedIn, setIsLoggedIn, setUserName }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -33,6 +39,7 @@ function Login({ setIsLoggedIn }) {
         }
       );
       setIsLoggedIn(true);
+      setUserName(response.data.name);
       navigate('/');
     } catch (error) {
       if (error.response) {
@@ -76,6 +83,13 @@ function Login({ setIsLoggedIn }) {
               {error}
             </Typography>
           )}
+          <Box sx={{ marginTop: 2 }}>
+            <Link to="/register" style={{ textDecoration: 'none' }}>
+              <Button variant="outlined" color="primary" fullWidth>
+                ユーザー登録
+              </Button>
+            </Link>
+          </Box>
         </form>
       </Box>
     </Container>
