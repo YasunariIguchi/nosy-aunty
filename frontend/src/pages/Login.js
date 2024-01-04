@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button, TextField, Typography, Box, Container } from '@mui/material';
 
-function Login({ isLoggedIn, setIsLoggedIn }) {
+function Login({ isLoggedIn, setIsLoggedIn, setUserName }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -39,6 +39,7 @@ function Login({ isLoggedIn, setIsLoggedIn }) {
         }
       );
       setIsLoggedIn(true);
+      setUserName(response.data.name);
       navigate('/');
     } catch (error) {
       if (error.response) {
