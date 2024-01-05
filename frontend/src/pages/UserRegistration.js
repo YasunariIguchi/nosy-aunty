@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
+import { validateName, validateEmail, validatePassword } from '../utils/validation';
 
 const UserRegistration = ({ isLoggedIn, setIsLoggedIn, setUserName }) => {
   const [name, setName] = useState('');
@@ -34,11 +35,6 @@ const UserRegistration = ({ isLoggedIn, setIsLoggedIn, setUserName }) => {
     }
   };
 
-
-  const validateName = (name) => {
-    return name.trim() !== '' && name.length <= 255;
-  };
-
   const handleEmailChange = (e) => {
     const inputValue = e.target.value;
 
@@ -49,11 +45,6 @@ const UserRegistration = ({ isLoggedIn, setIsLoggedIn, setUserName }) => {
     }
 
     setEmail(inputValue);
-  };
-
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
   };
 
   const handlePasswordChange = (e) => {
@@ -70,11 +61,6 @@ const UserRegistration = ({ isLoggedIn, setIsLoggedIn, setUserName }) => {
         setConfirmError('');
       }
     }
-  };
-
-  const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    return passwordRegex.test(password);
   };
 
   const handleConfirmPasswordChange = (e) => {
